@@ -1,0 +1,20 @@
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+img {
+  object-fit: contain;
+}
+
+.img {
+  display: inline-flex;
+}
+
+.memes {
+  display: inline-flex;
+    flex-wrap: wrap;
+}
