@@ -2,10 +2,6 @@
   display: none;
 }
 
-.show {
-  display: block;
-}
-
 img {
   object-fit: contain;
 }
@@ -16,5 +12,5 @@ img {
 
 .memes {
   display: inline-flex;
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }

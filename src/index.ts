@@ -11,8 +11,7 @@ type Meme = {
   id: string
 };
 
-const apiUrl = 'https://api.imgflip.com/get_memes';
-const apiUrlForCreateMeme = 'https://api.imgflip.com/caption_image';
+const apiUrl = 'https://api.imgflip.com';
 
 form.onsubmit = function (e: Event) {
   e.preventDefault();
@@ -21,18 +20,18 @@ form.onsubmit = function (e: Event) {
   const quantity = (<HTMLInputElement>quantityField).value || '';
 
   form.reset();
-  initApp(quantity);
+  initApp(Number(quantity));
 }
 
-async function initApp(quantity: string) {
+async function initApp(quantity: number) {
   const memes = await getMemes();
-  const listMemesForRender = memes.data.memes.slice(0, +quantity);
+  const listMemesForRender = memes.data.memes.slice(0, quantity);
   renderUsers(listMemesForRender);
 }
 
 async function getMemes() {
-  const { data: memes } = await axios(apiUrl);
-  return(memes);
+  const { data: memes } = await axios(`${apiUrl}/get_memes`);
+  return memes;
 }
 
 function renderUsers(listMemesForRender: Meme[]) {
@@ -46,7 +45,6 @@ function renderUsers(listMemesForRender: Meme[]) {
     bodyForMemes && bodyForMemes.appendChild(createdMarkup);
 
     formForCreateMeme.classList.remove('hidden');
-    formForCreateMeme.classList.add('show');
   });
 }
 
@@ -56,11 +54,11 @@ function createMeme(url: string, id: string) {
   img.src = url;
   img.width = 250;
   img.height = 250;
-  img.name = 'meme-id';
   div.appendChild(img);
 
   const inputForImg = document.createElement('input');
   inputForImg.type = 'hidden';
+  inputForImg.name = 'meme-id';
   div.appendChild(inputForImg);
 
   img.onclick = function() {
@@ -94,7 +92,7 @@ async function makeRequestForNewMeme(memeId: string, description1: string, descr
 
   const requestData = qs.stringify(objForMeme);
 
-  let { data: createdMeme } = await axios.post(`${apiUrlForCreateMeme}`, requestData);
+  let { data: createdMeme } = await axios.post(`${apiUrl}/caption_image`, requestData);
   createdMeme = createdMeme.data.url;
   renderNewMeme(createdMeme);
 }
